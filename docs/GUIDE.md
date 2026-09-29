@@ -5,15 +5,19 @@
 | Piece | What it does |
 | --- | --- |
 | `index.html` + `script.js` | The page visitors see at `…/reachouts/?u=<handle>`. With no handle, it's a landing page. |
-| `account.html` + `account.js` | Sign in with an emailed link, pick a name and handle, then copy your link. |
+| `account.html` + `account.js` | Sign in with an emailed link, pick a name, an optional headline and a handle, then copy your link. You can edit the name and headline later. |
 | `config.js` | The Supabase URL and anon key. Both are public by design. |
-| `supabase/migrations/` | The `profiles` table (handle and display name) and the `sends` log used for rate limits. Row-level security means people can only see and edit their own profile. |
+| `supabase/migrations/` | The `profiles` table (handle, display name and headline) and the `sends` log used for rate limits. Row-level security means people can only see and edit their own profile. |
 | `supabase/functions/send-message/` | Looks up the owner of a handle and emails them through Resend, with **Reply-To set to the visitor**. |
 | `supabase/templates/magic-link.html` | The sign-in email. |
 
-Your inbox is the email you sign in with, which the sign-in link verifies. Visitors never see it. They only see your display name.
+Your inbox is the email you sign in with, which the sign-in link verifies. Visitors never see it. They only see your display name and headline.
 
 Limits: each visitor email can send 5 messages an hour, and each link receives at most 30 an hour.
+
+## Current setup
+
+The Supabase project `reachouts` (ref `ykrdfabnfgsfpzcfudyq`, us-west-2) is created and deployed, and `config.js` points to it. Its database password is in your macOS Keychain as "Reachouts Supabase database password". The only step left is the Resend key (step 4 below).
 
 ## Going live
 
@@ -68,7 +72,8 @@ So out of the box, **you** can sign up and receive messages, but other people ca
    npx supabase secrets set FROM_EMAIL="Reachouts <hello@yourdomain.com>"
    ```
 
-3. Send sign-in emails through Resend too. In Supabase go to *Authentication → Emails → SMTP settings* and enter host `smtp.resend.com`, port `465`, username `resend`, and your Resend API key as the password. Use a sender on your domain.
+3. Send sign-in emails through Resend too. Once that's set up, uncomment the `[auth.email.template.magic_link]` block in `supabase/config.toml` and run `npx supabase config push` to switch on the branded sign-in email. Supabase blocks custom templates on its built-in sender.
+4. SMTP settings: In Supabase go to *Authentication → Emails → SMTP settings* and enter host `smtp.resend.com`, port `465`, username `resend`, and your Resend API key as the password. Use a sender on your domain.
 
 ## Running it locally
 

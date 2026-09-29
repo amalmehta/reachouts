@@ -48,6 +48,8 @@ Answered by the owner on 2026-09-29:
 - Accounts: anyone signs in with an emailed link, picks a handle and gets `…/reachouts/?u=<handle>`. Messages go to their inbox with Reply-To set to the visitor.
 - Backend: Supabase (sign-in, database, edge function) plus Resend (sending). This replaced the earlier Web3Forms version.
 - Tested on a full local copy of the backend with a fake Resend before going live.
+- Headline: owners can add an optional headline (up to 160 characters) shown under their name, and edit it later.
+- Supabase project `reachouts` created in the owner's org (us-west-2, free). The DB password is in the macOS Keychain. The branded sign-in email is off until custom SMTP exists, because Supabase's free tier blocks templates on the default sender.
 - Domain: none yet. Until one is verified in Resend, sign-in and message emails only reach the owner.
 
 Decided without asking:
@@ -75,3 +77,4 @@ CHANGELOG:
 - 2026-09-29 — friendlier look and copy: warm colors, rounded shapes, "Hey there 👋" heading
 - 2026-09-29 — added Make Your Own page so anyone can get their own Advice Tab link (no login)
 - 2026-09-29 — renamed to Reachouts; replaced Web3Forms with sign-in accounts (Supabase + Resend) so anyone can get their own link
+- 2026-09-29 — created and deployed the Supabase project; added an optional headline to each page

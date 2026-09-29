@@ -242,9 +242,11 @@ otp_expiry = 3600
 # admin_email = "admin@email.com"
 # sender_name = "Admin"
 
-[auth.email.template.magic_link]
-subject = "Your Reachouts sign-in link"
-content_path = "./supabase/templates/magic-link.html"
+# Branded sign-in email. Supabase only allows custom templates once custom SMTP is set up
+# (see "Opening it to everyone" in docs/GUIDE.md). Uncomment then, and run `supabase config push`.
+# [auth.email.template.magic_link]
+# subject = "Your Reachouts sign-in link"
+# content_path = "./supabase/templates/magic-link.html"
 
 # Uncomment to customize email template
 # [auth.email.template.invite]

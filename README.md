@@ -19,6 +19,7 @@ flowchart LR
 <img src="docs/Reachouts%20%E2%80%93%20Phone.png" alt="A Reachouts page on a phone" width="220" align="right">
 
 - Anyone can sign up: email sign-in link, no password
+- Add a short headline to the top of your page
 - Visitors just type their email and a message
 - Your email address is never shown to visitors
 - Replies go straight back to the sender

@@ -36,6 +36,9 @@
         <label>Your first name
           <input name="name" type="text" autocomplete="given-name" required maxlength="60" placeholder="Sam">
         </label>
+        <label>Your headline <span class="optional">(optional)</span>
+          <input name="headline" type="text" maxlength="160" placeholder="Product designer · happy to chat about career switches">
+        </label>
         <label>Your link
           <span class="prefix-field"><span class="prefix">…/reachouts/?u=</span><input name="handle" type="text" autocomplete="off" spellcheck="false" required pattern="[a-z0-9\-]{3,30}" maxlength="30" placeholder="sam"></span>
         </label>
@@ -58,6 +61,19 @@
           <a id="open" class="button secondary" href="#" target="_blank" rel="noopener">Try it out</a>
         </div>
       </div>
+
+      <form id="edit-form" class="edit" novalidate>
+        <h2>Your page</h2>
+        <label>Your first name
+          <input name="name" type="text" required maxlength="60">
+        </label>
+        <label>Your headline <span class="optional">(optional)</span>
+          <input name="headline" type="text" maxlength="160" placeholder="Product designer · happy to chat about career switches">
+        </label>
+        <button type="submit" class="secondary">Save changes</button>
+        <p class="status" role="status" aria-live="polite"></p>
+      </form>
+
       <p class="make-own"><a href="#" id="signout">Sign out</a></p>
     </section>
   </main>

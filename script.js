@@ -28,6 +28,11 @@
   if (error || !data || !data.length) return showHome(true);
 
   document.getElementById("heading").textContent = `Hi, I'm ${data[0].display_name} 👋`;
+  if (data[0].headline) {
+    const headline = document.getElementById("headline");
+    headline.textContent = data[0].headline;
+    headline.hidden = false;
+  }
   document.getElementById("tab").hidden = false;
   document.getElementById("make-own").hidden = false;
 

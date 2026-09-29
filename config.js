@@ -10,6 +10,6 @@ window.REACHOUTS = isLocal
     }
   : {
       // From your Supabase project: Settings → API.
-      supabaseUrl: "YOUR_SUPABASE_URL",
-      supabaseAnonKey: "YOUR_SUPABASE_ANON_KEY",
+      supabaseUrl: "https://ykrdfabnfgsfpzcfudyq.supabase.co",
+      supabaseAnonKey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlrcmRmYWJuZmdzZnB6Y2Z1ZHlxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA3MTIwOTMsImV4cCI6MjEwNjI4ODA5M30.ragRlAhGCDZI60-pmkmrO611noQwY1C8X14Aa-7wHK8",
     };

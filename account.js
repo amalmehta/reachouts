@@ -10,6 +10,7 @@
   const sections = ["loading", "signin", "setup", "done"].map((id) => document.getElementById(id));
   const signinForm = document.getElementById("signin-form");
   const setupForm = document.getElementById("setup-form");
+  const editForm = document.getElementById("edit-form");
   let user = null;
 
   function go(id) {
@@ -31,13 +32,15 @@
   async function render() {
     if (!user) return go("signin");
 
-    const { data: profile } = await sb.from("profiles").select("handle").eq("id", user.id).maybeSingle();
+    const { data: profile } = await sb.from("profiles").select("handle, display_name, headline").eq("id", user.id).maybeSingle();
     if (!profile) return go("setup");
 
     const link = linkFor(profile.handle);
     document.getElementById("link").value = link;
     document.getElementById("open").href = link;
     document.getElementById("inbox").textContent = user.email;
+    editForm.name.value = profile.display_name;
+    editForm.headline.value = profile.headline;
     go("done");
   }
 
@@ -89,11 +92,26 @@
     const { error } = await sb.from("profiles").insert({
       id: user.id,
       display_name: setupForm.name.value,
+      headline: setupForm.headline.value.trim(),
       handle: setupForm.handle.value,
     });
     button.disabled = false;
     if (!error) return render();
     show(setupForm, error.code === "23505" ? "That link's taken. Try another one?" : "Hmm, that didn't work. Mind trying again?", "error");
+  });
+
+  editForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    editForm.name.value = editForm.name.value.trim();
+    if (!editForm.checkValidity()) return show(editForm, "What should we call you?", "error");
+
+    const button = editForm.querySelector("button");
+    button.disabled = true;
+    const { error } = await sb.from("profiles")
+      .update({ display_name: editForm.name.value, headline: editForm.headline.value.trim() })
+      .eq("id", user.id);
+    button.disabled = false;
+    show(editForm, error ? "Hmm, that didn't save. Mind trying again?" : "Saved ✓", error ? "error" : "ok");
   });
 
   const copy = document.getElementById("copy");
