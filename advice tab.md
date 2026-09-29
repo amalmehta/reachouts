@@ -41,17 +41,20 @@ OPEN QUESTIONS / ASSUMPTIONS:
 <Agent fills in: what it guessed, what it decided without asking.>
 
 Answered by the owner on 2026-09-29:
+- Name: "Reachouts" (was "Advice Tab"). Repo and link are `reachouts`. This spec file keeps its original name.
 - Form: web page only, no Mac app. A link other people open can't be a Mac app, so the Mac-app-first rule doesn't apply here.
-- Delivery: Web3Forms (free, no backend, owner's email never shown on the page).
-- Hosting: GitHub Pages, repo `advice-tab`.
-- Fields: first built with name, email, type and message. The owner then asked for it to be extremely simple, so it's now just email and message, plus a hidden spam honeypot.
+- Hosting: GitHub Pages, repo `reachouts`.
+- Visitor fields: just email and message, plus a hidden spam honeypot. The owner asked for it to be extremely simple and friendly.
+- Accounts: anyone signs in with an emailed link, picks a handle and gets `…/reachouts/?u=<handle>`. Messages go to their inbox with Reply-To set to the visitor.
+- Backend: Supabase (sign-in, database, edge function) plus Resend (sending). This replaced the earlier Web3Forms version.
+- Tested on a full local copy of the backend with a fake Resend before going live.
+- Domain: none yet. Until one is verified in Resend, sign-in and message emails only reach the owner.
 
 Decided without asking:
-- No separate feedback tab. The page is itself a message-to-owner form, so a second feedback tab would duplicate it.
-- The heading defaults to "Advice Tab"; the owner can rename it and the intro line in `config.js`.
-- The Web3Forms access key is left as a placeholder. Getting one means entering the owner's email on web3forms.com, which the owner has to do.
-- "A login so anyone can use it": the owner chose a make-your-own link with no login. `make.html` builds a personal link (`?n=<name>&k=<key>`) from someone's own Web3Forms key, with no accounts or server.
-- The GitHub repo was created and pushed after the owner's go-ahead: https://github.com/amalmehta/advice-tab, live at https://amalmehta.github.io/advice-tab/.
+- Your inbox is the email you sign in with, so it's verified and can't be pointed at someone else's address. There's no separate "send to" email.
+- Rate limits: 5 messages an hour per visitor email, 30 an hour per link.
+- No separate feedback tab. The product is itself a message-to-owner form.
+- Pages show "Sign-ups open very soon" until the real Supabase URL and key are in `config.js`.
 
 CHANGELOG:
 
@@ -71,3 +74,4 @@ CHANGELOG:
 - 2026-09-29 — pushed to GitHub with Pages on; simplified the form to email + message only
 - 2026-09-29 — friendlier look and copy: warm colors, rounded shapes, "Hey there 👋" heading
 - 2026-09-29 — added Make Your Own page so anyone can get their own Advice Tab link (no login)
+- 2026-09-29 — renamed to Reachouts; replaced Web3Forms with sign-in accounts (Supabase + Resend) so anyone can get their own link

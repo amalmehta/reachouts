@@ -1,61 +1,106 @@
-# Advice Tab Guide
+# Reachouts Guide
 
 ## How it works
 
-Advice Tab is one static page: `index.html`, `styles.css`, `script.js` and `config.js`. When someone submits the form, the page sends it to [Web3Forms](https://web3forms.com), and Web3Forms emails it to you. The email's reply-to is the sender's address, so you can reply straight from your inbox.
+| Piece | What it does |
+| --- | --- |
+| `index.html` + `script.js` | The page visitors see at `…/reachouts/?u=<handle>`. With no handle, it's a landing page. |
+| `account.html` + `account.js` | Sign in with an emailed link, pick a name and handle, then copy your link. |
+| `config.js` | The Supabase URL and anon key. Both are public by design. |
+| `supabase/migrations/` | The `profiles` table (handle and display name) and the `sends` log used for rate limits. Row-level security means people can only see and edit their own profile. |
+| `supabase/functions/send-message/` | Looks up the owner of a handle and emails them through Resend, with **Reply-To set to the visitor**. |
+| `supabase/templates/magic-link.html` | The sign-in email. |
 
-## 1. Get a Web3Forms access key
+Your inbox is the email you sign in with, which the sign-in link verifies. Visitors never see it. They only see your display name.
 
-1. Go to https://web3forms.com and enter the email address where you want messages to arrive.
-2. They email you an access key. It looks like a UUID.
-3. Open `config.js` and replace `YOUR_WEB3FORMS_ACCESS_KEY` with that key.
+Limits: each visitor email can send 5 messages an hour, and each link receives at most 30 an hour.
 
-Web3Forms keys are designed to sit in public front-end code, so committing the key is fine. The key can only send email to you.
+## Going live
 
-## 2. Try it locally
+You need free accounts on [Supabase](https://supabase.com) and [Resend](https://resend.com). Commands run from the project folder, and `npx supabase` needs Node.
+
+1. **Create a Supabase project.** Copy its **Project URL** and **anon public key** from *Settings → API* into the non-local half of `config.js`.
+2. **Connect the folder to it:**
+
+   ```bash
+   npx supabase login
+   ```
+
+   ```bash
+   npx supabase link --project-ref <your-project-ref>
+   ```
+
+3. **Create the tables, sign-in settings and email function:**
+
+   ```bash
+   npx supabase db push
+   ```
+
+   ```bash
+   npx supabase config push
+   ```
+
+   ```bash
+   npx supabase functions deploy send-message
+   ```
+
+4. **Connect Resend.** Create an API key in Resend, then store it as a secret. Run this yourself, since the key is private:
+
+   ```bash
+   npx supabase secrets set RESEND_API_KEY=<your-resend-key>
+   ```
+
+5. **Push to GitHub.** Pages serves the site at `https://amalmehta.github.io/reachouts/`. Sign in at `/account.html`, pick your handle, and share your link.
+
+### Without your own domain (works for you only)
+
+- Resend's test sender (`onboarding@resend.dev`) only delivers to the email on your Resend account.
+- Supabase's built-in sign-in emails only reach members of your Supabase team.
+
+So out of the box, **you** can sign up and receive messages, but other people can't sign up yet.
+
+### Opening it to everyone (needs a domain, about $10 a year)
+
+1. Add and verify your domain in Resend (*Domains*).
+2. Send messages from it:
+
+   ```bash
+   npx supabase secrets set FROM_EMAIL="Reachouts <hello@yourdomain.com>"
+   ```
+
+3. Send sign-in emails through Resend too. In Supabase go to *Authentication → Emails → SMTP settings* and enter host `smtp.resend.com`, port `465`, username `resend`, and your Resend API key as the password. Use a sender on your domain.
+
+## Running it locally
+
+Needs Docker Desktop running.
+
+```bash
+npx supabase start
+```
+
+```bash
+npx supabase functions serve --env-file supabase/functions/.env
+```
 
 ```bash
 python3 -m http.server 8791
 ```
 
-Open http://localhost:8791, fill in the form and press **Send**. You should see "Sent. Thanks…" on the page and get an email titled **Advice Tab: message from <their email>** within a minute. Check spam the first time.
-
-Until a key is set, pressing Send shows "This page isn't set up yet…". That's expected.
-
-## 3. Put it online with GitHub Pages
-
-1. Push this folder to a GitHub repo, for example `advice-tab`.
-2. In the repo, go to **Settings → Pages**, set **Source: Deploy from a branch** and **Branch: main / (root)**, then save.
-3. After a minute your link is live at `https://<your-username>.github.io/advice-tab/`.
-
-Share that link anywhere: your email signature, bio, LinkedIn or website.
-
-## Letting anyone make their own
-
-Anyone can open `make.html` (the **Make your own Advice Tab →** link at the bottom of every page), paste their own free Web3Forms key and first name, and get a personal link:
-
-```
-https://amalmehta.github.io/advice-tab/?n=Sam&k=<their-key>
-```
-
-That link says "Hi, I'm Sam 👋" and sends messages to Sam's inbox, not yours. There are no accounts and nothing is stored: the key and name live in the link itself. Web3Forms keys are meant to be public, so having the key in the link is fine.
-
-Your own link (no `?k=`) keeps using the key in `config.js`.
+`supabase/functions/.env` holds `RESEND_API_KEY=…`. It's git-ignored. Open http://localhost:8791/account.html. Sign-in emails land in the local test inbox at http://127.0.0.1:54324. `config.js` switches to the local backend automatically on `localhost`.
 
 ## Customizing
 
 | What | Where |
 | --- | --- |
-| Heading and intro line | `heading` and `lede` in `config.js` |
+| Visitor page wording | `index.html` |
 | Colors | the variables at the top of `styles.css` (light and dark) |
-| Email subject | `subject` in `script.js` |
-
-## Spam
-
-The form has a hidden honeypot field. Bots that fill it in are dropped silently. Web3Forms also runs its own spam filtering. If spam gets through, you can turn on hCaptcha in the Web3Forms dashboard.
+| Email subject and footer | `supabase/functions/send-message/index.ts` |
+| Rate limits | `PER_OWNER_PER_HOUR` / `PER_SENDER_PER_HOUR` in the same file |
+| Sign-in email | `supabase/templates/magic-link.html` |
 
 ## Troubleshooting
 
-- **"Invalid access key"**: the key in `config.js` is wrong or has a typo.
-- **"Couldn't reach the server"**: the visitor is offline or an ad blocker is blocking `api.web3forms.com`.
-- **No email arrives**: check spam, and check that the key was created with the right address.
+- **"Sign-ups open very soon"**: `config.js` still has the placeholder Supabase values.
+- **"Email sending isn't set up yet."**: the `RESEND_API_KEY` secret is missing.
+- **Messages don't arrive, or reach only you**: you're on Resend's test sender. See *Opening it to everyone*.
+- **Sign-in link goes to the wrong page**: check *Authentication → URL Configuration* in Supabase. The site URL should be `https://amalmehta.github.io/reachouts/account.html`.

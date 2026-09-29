@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Your Reachouts Link</title>
+  <meta name="description" content="Get your own link where people can send you questions. Messages land in your inbox.">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="card">
+    <p id="loading" class="lede">One sec…</p>
+
+    <!-- Step 1: sign in with an emailed link -->
+    <section id="signin" hidden>
+      <header>
+        <h1>Get your own link ✨</h1>
+        <p class="lede">Put in your email and we'll send you a sign-in link. Messages people send you will land in that same inbox, and you just hit reply.</p>
+      </header>
+      <form id="signin-form" novalidate>
+        <label>Your email
+          <input name="email" type="email" autocomplete="email" required maxlength="200" placeholder="you@example.com">
+        </label>
+        <button type="submit">Email me a sign-in link</button>
+        <p class="status" role="status" aria-live="polite"></p>
+      </form>
+    </section>
+
+    <!-- Step 2: pick a name and a handle -->
+    <section id="setup" hidden>
+      <header>
+        <h1>Almost there 🙌</h1>
+        <p class="lede">What should people see, and what should your link be?</p>
+      </header>
+      <form id="setup-form" novalidate>
+        <label>Your first name
+          <input name="name" type="text" autocomplete="given-name" required maxlength="60" placeholder="Sam">
+        </label>
+        <label>Your link
+          <span class="prefix-field"><span class="prefix">…/reachouts/?u=</span><input name="handle" type="text" autocomplete="off" spellcheck="false" required pattern="[a-z0-9\-]{3,30}" maxlength="30" placeholder="sam"></span>
+        </label>
+        <p class="hint">3–30 characters: lowercase letters, numbers and dashes.</p>
+        <button type="submit">Create my link</button>
+        <p class="status" role="status" aria-live="polite"></p>
+      </form>
+    </section>
+
+    <!-- Step 3: here's your link -->
+    <section id="done" hidden>
+      <header>
+        <h1>You're all set 🎉</h1>
+        <p class="lede">Share this link on LinkedIn, in your bio or anywhere else. Messages go to <strong id="inbox"></strong>, and you just hit reply to answer.</p>
+      </header>
+      <div class="stack">
+        <input id="link" type="text" readonly aria-label="Your link">
+        <div class="actions">
+          <button type="button" id="copy">Copy link</button>
+          <a id="open" class="button secondary" href="#" target="_blank" rel="noopener">Try it out</a>
+        </div>
+      </div>
+      <p class="make-own"><a href="#" id="signout">Sign out</a></p>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="config.js"></script>
+  <script src="account.js"></script>
+</body>
+</html>

@@ -3,36 +3,49 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Advice Tab</title>
-  <meta name="description" content="Send a reachout or a question straight to my inbox.">
+  <title>Reachouts</title>
+  <meta name="description" content="Send a question or a note straight to my inbox.">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <main class="card">
-    <header>
-      <h1 id="heading">Hey there 👋</h1>
-      <p class="lede" id="lede">Got a question, want some advice, or just want to say hi? Drop me a note. I read every one and write back.</p>
-    </header>
+    <!-- Someone's personal page: ?u=<handle> -->
+    <section id="tab" hidden>
+      <header>
+        <h1 id="heading">Hey there 👋</h1>
+        <p class="lede">Got a question, want some advice, or just want to say hi? Drop me a note. I read every one and write back.</p>
+      </header>
 
-    <form id="advice-form" novalidate>
-      <label>Your email, so I can reply
-        <input name="email" type="email" autocomplete="email" required maxlength="200" placeholder="you@example.com">
-      </label>
+      <form id="reach-form" novalidate>
+        <label>Your email, so I can reply
+          <input name="email" type="email" autocomplete="email" required maxlength="200" placeholder="you@example.com">
+        </label>
 
-      <label>What's on your mind?
-        <textarea name="message" rows="6" required maxlength="5000" placeholder="No question is too small."></textarea>
-      </label>
+        <label>What's on your mind?
+          <textarea name="message" rows="6" required maxlength="5000" placeholder="No question is too small."></textarea>
+        </label>
 
-      <!-- Honeypot: humans never see this, bots fill it in -->
-      <input type="checkbox" name="botcheck" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <!-- Honeypot: humans never see this, bots fill it in -->
+        <input type="checkbox" name="botcheck" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
 
-      <button type="submit" id="send">Send it my way</button>
-      <p id="status" role="status" aria-live="polite"></p>
-    </form>
+        <button type="submit" id="send">Send it my way</button>
+        <p id="status" role="status" aria-live="polite"></p>
+      </form>
+    </section>
 
-    <p class="make-own"><a href="make.html">Make your own Advice Tab →</a></p>
+    <!-- No handle, or one that doesn't exist -->
+    <section id="home" hidden>
+      <header>
+        <h1 id="home-heading">Reachouts ✨</h1>
+        <p class="lede" id="home-lede">A friendly link where people can send you questions. Messages land in your inbox, and you just hit reply.</p>
+      </header>
+      <a class="button" href="account.html">Get your own link</a>
+    </section>
+
+    <p class="make-own" id="make-own" hidden><a href="account.html">Get your own Reachouts link →</a></p>
   </main>
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="config.js"></script>
   <script src="script.js"></script>
 </body>

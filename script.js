@@ -1,22 +1,35 @@
-(function () {
-  const cfg = window.ADVICE_TAB || {};
-  const form = document.getElementById("advice-form");
+(async function () {
+  const cfg = window.REACHOUTS;
+  const ready = !cfg.supabaseUrl.startsWith("YOUR_");
+  const sb = ready && window.supabase.createClient(cfg.supabaseUrl, cfg.supabaseAnonKey);
+
+  const form = document.getElementById("reach-form");
   const status = document.getElementById("status");
   const send = document.getElementById("send");
-
-  // A personal link carries its owner's key and name: ?k=<web3forms key>&n=<name>
-  const params = new URLSearchParams(location.search);
-  const key = params.get("k") || cfg.accessKey;
-  const name = (params.get("n") || "").trim().slice(0, 60);
-
-  if (name) document.getElementById("heading").textContent = `Hi, I'm ${name} 👋`;
-  else if (cfg.heading) document.getElementById("heading").textContent = cfg.heading;
-  if (cfg.lede) document.getElementById("lede").textContent = cfg.lede;
+  const handle = (new URLSearchParams(location.search).get("u") || "").trim().toLowerCase();
 
   function show(text, kind) {
     status.textContent = text;
     status.className = kind || "";
   }
+
+  function showHome(notFound) {
+    if (notFound) {
+      document.getElementById("home-heading").textContent = "Hmm, couldn't find that one 🤔";
+      document.getElementById("home-lede").textContent =
+        "This Reachouts link doesn't exist, or it may have a typo. Want one of your own?";
+    }
+    document.getElementById("home").hidden = false;
+  }
+
+  if (!handle || !ready) return showHome(!!handle);
+
+  const { data, error } = await sb.rpc("public_profile", { h: handle });
+  if (error || !data || !data.length) return showHome(true);
+
+  document.getElementById("heading").textContent = `Hi, I'm ${data[0].display_name} 👋`;
+  document.getElementById("tab").hidden = false;
+  document.getElementById("make-own").hidden = false;
 
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
@@ -27,40 +40,21 @@
       bad.focus();
       return;
     }
-    if (!key || key.startsWith("YOUR_")) {
-      show("This page isn't set up yet. Want your own? Tap “Make your own” below.", "error");
-      return;
-    }
 
-    const data = Object.fromEntries(new FormData(form));
-    if (data.botcheck) return; // silently drop bot submissions
-
-    const payload = {
-      access_key: key,
-      subject: `Advice Tab: message from ${data.email}`,
-      from_name: "Advice Tab",
-      email: data.email,
-      message: data.message,
-      botcheck: false,
-    };
-
+    const fields = Object.fromEntries(new FormData(form));
     send.disabled = true;
     show("Sending…");
     try {
-      const res = await fetch("https://api.web3forms.com/submit", {
-        method: "POST",
-        headers: { "Content-Type": "application/json", Accept: "application/json" },
-        body: JSON.stringify(payload),
+      const { error } = await sb.functions.invoke("send-message", {
+        body: { handle, email: fields.email, message: fields.message, botcheck: !!fields.botcheck },
       });
-      const json = await res.json().catch(() => ({}));
-      if (res.ok && json.success) {
+      if (error) {
+        const body = await error.context?.json?.().catch(() => null);
+        show(body?.error || "Hmm, couldn't connect. Check your internet and try again?", "error");
+      } else {
         form.reset();
         show("Got it, thanks for reaching out! I'll write back soon. 🙂", "ok");
-      } else {
-        show(json.message || "Hmm, that didn't go through. Mind trying again?", "error");
       }
-    } catch {
-      show("Hmm, couldn't connect. Check your internet and try again?", "error");
     } finally {
       send.disabled = false;
     }
