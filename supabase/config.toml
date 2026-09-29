@@ -233,20 +233,19 @@ otp_length = 6
 otp_expiry = 3600
 
 # Use a production-ready SMTP server
-# [auth.email.smtp]
-# enabled = true
-# host = "smtp.sendgrid.net"
-# port = 587
-# user = "apikey"
-# pass = "env(SENDGRID_API_KEY)"
-# admin_email = "admin@email.com"
-# sender_name = "Admin"
+# Sign-in emails go through Resend from the reachouts.me domain, so anyone can sign up.
+[auth.email.smtp]
+enabled = true
+host = "smtp.resend.com"
+port = 465
+user = "resend"
+pass = "env(RESEND_API_KEY)"
+admin_email = "hello@reachouts.me"
+sender_name = "Reachouts"
 
-# Branded sign-in email. Supabase only allows custom templates once custom SMTP is set up
-# (see "Opening it to everyone" in docs/GUIDE.md). Uncomment then, and run `supabase config push`.
-# [auth.email.template.magic_link]
-# subject = "Your Reachouts sign-in link"
-# content_path = "./supabase/templates/magic-link.html"
+[auth.email.template.magic_link]
+subject = "Your Reachouts sign-in link"
+content_path = "./supabase/templates/magic-link.html"
 
 # Uncomment to customize email template
 # [auth.email.template.invite]

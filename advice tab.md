@@ -49,8 +49,8 @@ Answered by the owner on 2026-09-29:
 - Backend: Supabase (sign-in, database, edge function) plus Resend (sending). This replaced the earlier Web3Forms version.
 - Tested on a full local copy of the backend with a fake Resend before going live.
 - Headline: owners can add an optional headline (up to 160 characters) shown under their name, and edit it later.
-- Supabase project `reachouts` created in the owner's org (us-west-2, free). The DB password is in the macOS Keychain. The branded sign-in email is off until custom SMTP exists, because Supabase's free tier blocks templates on the default sender.
-- Domain: none yet. Until one is verified in Resend, sign-in and message emails only reach the owner.
+- Supabase project `reachouts` created in the owner's org (us-west-2, free). The DB password is in the macOS Keychain. The branded sign-in email is on now that sign-in emails go through Resend.
+- Domain: reachouts.me, verified in Resend. Messages and sign-in emails come from hello@reachouts.me via Resend, so anyone can sign up. The Resend key was entered by the owner in their terminal and is stored only as a Supabase secret.
 
 Decided without asking:
 - Your inbox is the email you sign in with, so it's verified and can't be pointed at someone else's address. There's no separate "send to" email.
@@ -79,3 +79,4 @@ CHANGELOG:
 - 2026-09-29 — renamed to Reachouts; replaced Web3Forms with sign-in accounts (Supabase + Resend) so anyone can get their own link
 - 2026-09-29 — created and deployed the Supabase project; added an optional headline to each page
 - 2026-09-29 — moved to reachouts.me
+- 2026-09-29 — connected Resend on reachouts.me for messages and sign-in emails; sign-ups open to anyone

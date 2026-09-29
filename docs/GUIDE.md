@@ -17,7 +17,7 @@ Limits: each visitor email can send 5 messages an hour, and each link receives a
 
 ## Current setup
 
-The Supabase project `reachouts` (ref `ykrdfabnfgsfpzcfudyq`, us-west-2) is created and deployed, and `config.js` points to it. Its database password is in your macOS Keychain as "Reachouts Supabase database password". The only step left is the Resend key (step 4 below).
+The Supabase project `reachouts` (ref `ykrdfabnfgsfpzcfudyq`, us-west-2) is created and deployed, and `config.js` points to it. Its database password is in your macOS Keychain as "Reachouts Supabase database password". The site is on reachouts.me (DNS at Cloudflare, records set to "DNS only"). Resend sends from `hello@reachouts.me` for both messages and sign-in emails, so anyone can sign up.
 
 ## Going live
 
@@ -91,7 +91,7 @@ npx supabase functions serve --env-file supabase/functions/.env
 python3 -m http.server 8791
 ```
 
-`supabase/functions/.env` holds `RESEND_API_KEY=…`. It's git-ignored. Open http://localhost:8791/account.html. Sign-in emails land in the local test inbox at http://127.0.0.1:54324. `config.js` switches to the local backend automatically on `localhost`.
+`supabase/functions/.env` holds `RESEND_API_KEY=…`. It's git-ignored. Sign-in emails use Resend SMTP (see `[auth.email.smtp]` in `supabase/config.toml`), so export `RESEND_API_KEY` before `supabase start`, or set `enabled = false` there while working locally. Open http://localhost:8791/account.html. Sign-in emails land in the local test inbox at http://127.0.0.1:54324. `config.js` switches to the local backend automatically on `localhost`.
 
 ## Customizing
 
