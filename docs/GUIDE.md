@@ -5,13 +5,13 @@
 | Piece | What it does |
 | --- | --- |
 | `index.html` + `script.js` | The page visitors see at `reachouts.me/?u=<handle>`. With no handle, it's a landing page. |
-| `account.html` + `account.js` | Sign in with an emailed link, pick a name, an optional headline and a handle, then copy your link. You can edit the name and headline later. |
+| `account.html` + `account.js` | Sign in with an emailed link, pick a name, an optional headline and intro, and a handle, then copy your link. You can edit the name, headline and intro later. |
 | `config.js` | The Supabase URL and anon key. Both are public by design. |
-| `supabase/migrations/` | The `profiles` table (handle, display name and headline) and the `sends` log used for rate limits. Row-level security means people can only see and edit their own profile. |
+| `supabase/migrations/` | The `profiles` table (handle, display name, headline and intro) and the `sends` log used for rate limits. Row-level security means people can only see and edit their own profile. |
 | `supabase/functions/send-message/` | Looks up the owner of a handle and emails them through Resend, with **Reply-To set to the visitor**. |
 | `supabase/templates/magic-link.html` | The sign-in email. |
 
-Your inbox is the email you sign in with, which the sign-in link verifies. Visitors never see it. They only see your display name and headline.
+Your inbox is the email you sign in with, which the sign-in link verifies. Visitors never see it. They only see your display name, headline and intro.
 
 Limits: each visitor email can send 5 messages an hour, and each link receives at most 30 an hour.
 

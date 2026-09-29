@@ -32,7 +32,7 @@
   async function render() {
     if (!user) return go("signin");
 
-    const { data: profile } = await sb.from("profiles").select("handle, display_name, headline").eq("id", user.id).maybeSingle();
+    const { data: profile } = await sb.from("profiles").select("handle, display_name, headline, intro").eq("id", user.id).maybeSingle();
     if (!profile) return go("setup");
 
     const link = linkFor(profile.handle);
@@ -41,6 +41,7 @@
     document.getElementById("inbox").textContent = user.email;
     editForm.name.value = profile.display_name;
     editForm.headline.value = profile.headline;
+    editForm.intro.value = profile.intro;
     go("done");
   }
 
@@ -93,6 +94,7 @@
       id: user.id,
       display_name: setupForm.name.value,
       headline: setupForm.headline.value.trim(),
+      intro: setupForm.intro.value.trim(),
       handle: setupForm.handle.value,
     });
     button.disabled = false;
@@ -108,7 +110,11 @@
     const button = editForm.querySelector("button");
     button.disabled = true;
     const { error } = await sb.from("profiles")
-      .update({ display_name: editForm.name.value, headline: editForm.headline.value.trim() })
+      .update({
+        display_name: editForm.name.value,
+        headline: editForm.headline.value.trim(),
+        intro: editForm.intro.value.trim(),
+      })
       .eq("id", user.id);
     button.disabled = false;
     show(editForm, error ? "Hmm, that didn't save. Mind trying again?" : "Saved ✓", error ? "error" : "ok");

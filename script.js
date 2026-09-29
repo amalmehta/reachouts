@@ -33,6 +33,7 @@
     headline.textContent = data[0].headline;
     headline.hidden = false;
   }
+  if (data[0].intro) document.getElementById("lede").textContent = data[0].intro;
   document.getElementById("tab").hidden = false;
   document.getElementById("make-own").hidden = false;
 
