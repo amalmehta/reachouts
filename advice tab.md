@@ -43,7 +43,7 @@ OPEN QUESTIONS / ASSUMPTIONS:
 Answered by the owner on 2026-09-29:
 - Name: "Reachouts" (was "Advice Tab"). Repo and link are `reachouts`. This spec file keeps its original name.
 - Form: web page only, no Mac app. A link other people open can't be a Mac app, so the Mac-app-first rule doesn't apply here.
-- Hosting: GitHub Pages, repo `reachouts`.
+- Hosting: GitHub Pages, repo `reachouts`, on the custom domain reachouts.me (bought by the owner on Cloudflare; DNS at Cloudflare).
 - Visitor fields: just email and message, plus a hidden spam honeypot. The owner asked for it to be extremely simple and friendly.
 - Accounts: anyone signs in with an emailed link, picks a handle and gets `…/reachouts/?u=<handle>`. Messages go to their inbox with Reply-To set to the visitor.
 - Backend: Supabase (sign-in, database, edge function) plus Resend (sending). This replaced the earlier Web3Forms version.
@@ -78,3 +78,4 @@ CHANGELOG:
 - 2026-09-29 — added Make Your Own page so anyone can get their own Advice Tab link (no login)
 - 2026-09-29 — renamed to Reachouts; replaced Web3Forms with sign-in accounts (Supabase + Resend) so anyone can get their own link
 - 2026-09-29 — created and deployed the Supabase project; added an optional headline to each page
+- 2026-09-29 — moved to reachouts.me
