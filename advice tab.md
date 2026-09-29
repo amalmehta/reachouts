@@ -50,6 +50,7 @@ Decided without asking:
 - No separate feedback tab. The page is itself a message-to-owner form, so a second feedback tab would duplicate it.
 - The heading defaults to "Advice Tab"; the owner can rename it and the intro line in `config.js`.
 - The Web3Forms access key is left as a placeholder. Getting one means entering the owner's email on web3forms.com, which the owner has to do.
+- "A login so anyone can use it": the owner chose a make-your-own link with no login. `make.html` builds a personal link (`?n=<name>&k=<key>`) from someone's own Web3Forms key, with no accounts or server.
 - The GitHub repo was created and pushed after the owner's go-ahead: https://github.com/amalmehta/advice-tab, live at https://amalmehta.github.io/advice-tab/.
 
 CHANGELOG:
@@ -69,3 +70,4 @@ CHANGELOG:
 - 2026-09-29 — built v1: static contact page (Web3Forms), README with screenshots and diagram, docs/GUIDE.md; filled in OPEN QUESTIONS
 - 2026-09-29 — pushed to GitHub with Pages on; simplified the form to email + message only
 - 2026-09-29 — friendlier look and copy: warm colors, rounded shapes, "Hey there 👋" heading
+- 2026-09-29 — added Make Your Own page so anyone can get their own Advice Tab link (no login)

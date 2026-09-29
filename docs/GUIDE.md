@@ -30,6 +30,18 @@ Until a key is set, pressing Send shows "This page isn't set up yet…". That's 
 
 Share that link anywhere: your email signature, bio, LinkedIn or website.
 
+## Letting anyone make their own
+
+Anyone can open `make.html` (the **Make your own Advice Tab →** link at the bottom of every page), paste their own free Web3Forms key and first name, and get a personal link:
+
+```
+https://amalmehta.github.io/advice-tab/?n=Sam&k=<their-key>
+```
+
+That link says "Hi, I'm Sam 👋" and sends messages to Sam's inbox, not yours. There are no accounts and nothing is stored: the key and name live in the link itself. Web3Forms keys are meant to be public, so having the key in the link is fine.
+
+Your own link (no `?k=`) keeps using the key in `config.js`.
+
 ## Customizing
 
 | What | Where |

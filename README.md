@@ -18,9 +18,14 @@ flowchart LR
 <img src="docs/Advice%20Tab%20%E2%80%93%20Phone.png" alt="Advice Tab on a phone" width="220" align="right">
 
 - Two fields: their email and a message
+- Anyone can make their own link in about a minute, with no account
 - One static page with no server to run
 - Your email address is never shown on the page
 - Light and dark mode, and it works on phones
 - Spam honeypot built in
+
+<br clear="right">
+
+<img src="docs/Advice%20Tab%20%E2%80%93%20Make%20Your%20Own.png" alt="Make your own Advice Tab" width="48%">
 
 Setup, deployment and customization are in **[docs/GUIDE.md](docs/GUIDE.md)**.

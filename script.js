@@ -4,7 +4,13 @@
   const status = document.getElementById("status");
   const send = document.getElementById("send");
 
-  if (cfg.heading) document.getElementById("heading").textContent = cfg.heading;
+  // A personal link carries its owner's key and name: ?k=<web3forms key>&n=<name>
+  const params = new URLSearchParams(location.search);
+  const key = params.get("k") || cfg.accessKey;
+  const name = (params.get("n") || "").trim().slice(0, 60);
+
+  if (name) document.getElementById("heading").textContent = `Hi, I'm ${name} 👋`;
+  else if (cfg.heading) document.getElementById("heading").textContent = cfg.heading;
   if (cfg.lede) document.getElementById("lede").textContent = cfg.lede;
 
   function show(text, kind) {
@@ -21,8 +27,8 @@
       bad.focus();
       return;
     }
-    if (!cfg.accessKey || cfg.accessKey.startsWith("YOUR_")) {
-      show("This page isn't set up yet: add a Web3Forms access key in config.js.", "error");
+    if (!key || key.startsWith("YOUR_")) {
+      show("This page isn't set up yet. Want your own? Tap “Make your own” below.", "error");
       return;
     }
 
@@ -30,7 +36,7 @@
     if (data.botcheck) return; // silently drop bot submissions
 
     const payload = {
-      access_key: cfg.accessKey,
+      access_key: key,
       subject: `Advice Tab: message from ${data.email}`,
       from_name: "Advice Tab",
       email: data.email,

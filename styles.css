@@ -73,7 +73,9 @@ input:focus, select:focus, textarea:focus {
 
 .hp { position: absolute; left: -9999px; }
 
-button {
+button, .button {
+  display: inline-block;
+  text-decoration: none;
   justify-self: start;
   font: inherit;
   font-weight: 600;
@@ -84,12 +86,25 @@ button {
   padding: 12px 28px;
   cursor: pointer;
 }
-button:hover { filter: brightness(1.05); }
+button:hover, .button:hover { filter: brightness(1.05); }
 button:disabled { opacity: 0.6; cursor: wait; }
 
 #status { margin: 0; min-height: 1.5em; font-size: 14px; color: var(--muted); }
 #status.ok { color: var(--ok); }
 #status.error { color: var(--error); }
+
+.make-own { margin: 8px 0 0; font-size: 13px; text-align: center; }
+a { color: var(--accent); }
+.make-own a { color: var(--muted); text-decoration: none; }
+.make-own a:hover { color: var(--accent); text-decoration: underline; }
+
+.steps { margin: 0 0 20px; padding-left: 20px; color: var(--muted); }
+.steps li { margin-bottom: 6px; }
+#result { display: none; gap: 10px; margin-top: 8px; }
+#result.show { display: grid; }
+#link { font-size: 14px; }
+.actions { display: flex; gap: 10px; flex-wrap: wrap; }
+.secondary { background: transparent; color: var(--accent); border: 1px solid var(--accent); }
 
 @media (max-width: 520px) {
   .card { padding: 24px 20px; }
