@@ -18,7 +18,7 @@ Web3Forms keys are designed to sit in public front-end code, so committing the k
 python3 -m http.server 8791
 ```
 
-Open http://localhost:8791, fill in the form and press **Send**. You should see "Sent. Thanks…" on the page and get an email titled **Advice Tab: Reach out from <name>** within a minute. Check spam the first time.
+Open http://localhost:8791, fill in the form and press **Send**. You should see "Sent. Thanks…" on the page and get an email titled **Advice Tab: message from <their email>** within a minute. Check spam the first time.
 
 Until a key is set, pressing Send shows "This page isn't set up yet…". That's expected.
 
@@ -35,7 +35,6 @@ Share that link anywhere: your email signature, bio, LinkedIn or website.
 | What | Where |
 | --- | --- |
 | Heading and intro line | `heading` and `lede` in `config.js` |
-| Dropdown options (Reach out / Question / Advice) | the `<select>` in `index.html` |
 | Colors | the variables at the top of `styles.css` (light and dark) |
 | Email subject | `subject` in `script.js` |
 

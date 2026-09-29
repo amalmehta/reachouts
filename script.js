@@ -4,10 +4,7 @@
   const status = document.getElementById("status");
   const send = document.getElementById("send");
 
-  if (cfg.heading) {
-    document.getElementById("heading").textContent = cfg.heading;
-    document.title = cfg.heading;
-  }
+  if (cfg.heading) document.getElementById("heading").textContent = cfg.heading;
   if (cfg.lede) document.getElementById("lede").textContent = cfg.lede;
 
   function show(text, kind) {
@@ -20,7 +17,7 @@
 
     if (!form.checkValidity()) {
       const bad = form.querySelector(":invalid");
-      show(bad.name === "email" ? "Please enter a valid email." : "Please fill in every field.", "error");
+      show(bad.name === "email" ? "Mind adding an email so I can write back?" : "Don't forget your message!", "error");
       bad.focus();
       return;
     }
@@ -34,11 +31,9 @@
 
     const payload = {
       access_key: cfg.accessKey,
-      subject: `Advice Tab: ${data.type} from ${data.name}`,
+      subject: `Advice Tab: message from ${data.email}`,
       from_name: "Advice Tab",
-      name: data.name,
       email: data.email,
-      type: data.type,
       message: data.message,
       botcheck: false,
     };
@@ -54,12 +49,12 @@
       const json = await res.json().catch(() => ({}));
       if (res.ok && json.success) {
         form.reset();
-        show("Sent. Thanks — I'll get back to you by email.", "ok");
+        show("Got it, thanks for reaching out! I'll write back soon. 🙂", "ok");
       } else {
-        show(json.message || "Something went wrong. Please try again.", "error");
+        show(json.message || "Hmm, that didn't go through. Mind trying again?", "error");
       }
     } catch {
-      show("Couldn't reach the server. Check your connection and try again.", "error");
+      show("Hmm, couldn't connect. Check your internet and try again?", "error");
     } finally {
       send.disabled = false;
     }

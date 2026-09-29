@@ -5,6 +5,6 @@ window.ADVICE_TAB = {
   accessKey: "YOUR_WEB3FORMS_ACCESS_KEY",
 
   // Optional: override the page heading and intro line.
-  heading: "Advice Tab",
-  lede: "Have a question, want advice, or just want to reach out? Send it here and it lands straight in my inbox.",
+  heading: "Hey there 👋",
+  lede: "Got a question, want some advice, or just want to say hi? Drop me a note. I read every one and write back.",
 };

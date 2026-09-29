@@ -10,40 +10,25 @@
 <body>
   <main class="card">
     <header>
-      <h1 id="heading">Advice Tab</h1>
-      <p class="lede" id="lede">Have a question, want advice, or just want to reach out? Send it here and it lands straight in my inbox.</p>
+      <h1 id="heading">Hey there 👋</h1>
+      <p class="lede" id="lede">Got a question, want some advice, or just want to say hi? Drop me a note. I read every one and write back.</p>
     </header>
 
     <form id="advice-form" novalidate>
-      <div class="row">
-        <label>Your name
-          <input name="name" type="text" autocomplete="name" required maxlength="100">
-        </label>
-        <label>Your email
-          <input name="email" type="email" autocomplete="email" required maxlength="200">
-        </label>
-      </div>
-
-      <label>What's this about?
-        <select name="type">
-          <option>Reach out</option>
-          <option>Question</option>
-          <option>Advice</option>
-        </select>
+      <label>Your email, so I can reply
+        <input name="email" type="email" autocomplete="email" required maxlength="200" placeholder="you@example.com">
       </label>
 
-      <label>Message
-        <textarea name="message" rows="7" required maxlength="5000" placeholder="What's on your mind?"></textarea>
+      <label>What's on your mind?
+        <textarea name="message" rows="6" required maxlength="5000" placeholder="No question is too small."></textarea>
       </label>
 
       <!-- Honeypot: humans never see this, bots fill it in -->
       <input type="checkbox" name="botcheck" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
 
-      <button type="submit" id="send">Send</button>
+      <button type="submit" id="send">Send it my way</button>
       <p id="status" role="status" aria-live="polite"></p>
     </form>
-
-    <footer>Your email is only used to reply to you.</footer>
   </main>
 
   <script src="config.js"></script>

@@ -44,13 +44,13 @@ Answered by the owner on 2026-09-29:
 - Form: web page only, no Mac app. A link other people open can't be a Mac app, so the Mac-app-first rule doesn't apply here.
 - Delivery: Web3Forms (free, no backend, owner's email never shown on the page).
 - Hosting: GitHub Pages, repo `advice-tab`.
-- Fields: name, email, type (Reach out / Question / Advice), message, plus a hidden spam honeypot.
+- Fields: first built with name, email, type and message. The owner then asked for it to be extremely simple, so it's now just email and message, plus a hidden spam honeypot.
 
 Decided without asking:
 - No separate feedback tab. The page is itself a message-to-owner form, so a second feedback tab would duplicate it.
 - The heading defaults to "Advice Tab"; the owner can rename it and the intro line in `config.js`.
 - The Web3Forms access key is left as a placeholder. Getting one means entering the owner's email on web3forms.com, which the owner has to do.
-- The GitHub repo is not created or pushed yet. That's outward-facing and waits for the owner's go-ahead.
+- The GitHub repo was created and pushed after the owner's go-ahead: https://github.com/amalmehta/advice-tab, live at https://amalmehta.github.io/advice-tab/.
 
 CHANGELOG:
 
@@ -67,3 +67,5 @@ CHANGELOG:
 - 2026-09-28 — added meta-instruction: name things like a person would, never snake_case
 - 2026-09-28 — changed meta-instruction: README leads with visuals; instructions live in a linked guide
 - 2026-09-29 — built v1: static contact page (Web3Forms), README with screenshots and diagram, docs/GUIDE.md; filled in OPEN QUESTIONS
+- 2026-09-29 — pushed to GitHub with Pages on; simplified the form to email + message only
+- 2026-09-29 — friendlier look and copy: warm colors, rounded shapes, "Hey there 👋" heading
