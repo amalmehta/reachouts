@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+  <title>Reachouts: a message bubble with a reply arrow</title>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2=".6" y2="1">
+      <stop offset="0" stop-color="#fffaf3"/>
+      <stop offset="1" stop-color="#fbe4cf"/>
+    </linearGradient>
+    <linearGradient id="sheen" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#fff" stop-opacity=".55"/>
+      <stop offset=".5" stop-color="#fff" stop-opacity="0"/>
+    </linearGradient>
+    <clipPath id="tile"><path d="M300 0H724C948 0 1024 76 1024 300V724C1024 948 948 1024 724 1024H300C76 1024 0 948 0 724V300C0 76 76 0 300 0Z"/></clipPath>
+    <filter id="lift" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="14" stdDeviation="18" flood-color="#3a2a1a" flood-opacity=".14"/>
+    </filter>
+    <linearGradient id="bubble" gradientUnits="userSpaceOnUse" x1="512" y1="250" x2="512" y2="790">
+      <stop offset="0" stop-color="#e57a5d"/>
+      <stop offset="1" stop-color="#c24f35"/>
+    </linearGradient>
+  </defs>
+  <path d="M300 0H724C948 0 1024 76 1024 300V724C1024 948 948 1024 724 1024H300C76 1024 0 948 0 724V300C0 76 76 0 300 0Z" fill="url(#bg)"/>
+  <path d="M300 0H724C948 0 1024 76 1024 300V724C1024 948 948 1024 724 1024H300C76 1024 0 948 0 724V300C0 76 76 0 300 0Z" fill="url(#sheen)"/>
+  <g clip-path="url(#tile)" filter="url(#lift)">
+  <rect x="216" y="250" width="592" height="430" rx="140" fill="url(#bubble)"/>
+  <path d="M330 640 L292 792 C288 806 300 814 311 805 L470 660 Z" fill="url(#bubble)" stroke="url(#bubble)" stroke-width="16" stroke-linejoin="round"/>
+  <g fill="none" stroke="#fffaf3" stroke-width="50" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M650 568 C650 470 580 432 440 432"/>
+    <path d="M520 352 L436 432 L520 512"/>
+  </g>
+  </g>
+</svg>
