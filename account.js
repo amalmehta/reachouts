@@ -43,7 +43,61 @@
     editForm.headline.value = profile.headline;
     editForm.intro.value = profile.intro;
     go("done");
+    loadLog();
   }
+
+  // Everyone who reached out, newest first.
+  let log = [];
+  async function loadLog() {
+    const { data } = await sb.from("messages")
+      .select("sender_email, message, created_at")
+      .eq("profile_id", user.id)
+      .order("created_at", { ascending: false })
+      .limit(1000);
+    log = data || [];
+
+    const list = document.getElementById("log-list");
+    list.replaceChildren();
+    for (const m of log) {
+      const item = document.createElement("li");
+      const top = document.createElement("div");
+      top.className = "log-top";
+      const who = document.createElement("strong");
+      who.textContent = m.sender_email;
+      const when = document.createElement("span");
+      when.className = "log-when";
+      when.textContent = new Date(m.created_at).toLocaleString(undefined, { dateStyle: "medium", timeStyle: "short" });
+      const replyLink = document.createElement("a");
+      replyLink.textContent = "Reply";
+      replyLink.href = `mailto:${m.sender_email}?subject=${encodeURIComponent("Re: your message on Reachouts")}`;
+      top.append(who, when, replyLink);
+      const text = document.createElement("p");
+      text.className = m.message ? "log-text" : "log-text missing";
+      text.textContent = m.message || "Sent before the log started, so the message is only in your inbox.";
+      item.append(top, text);
+      list.append(item);
+    }
+    document.getElementById("log-count").textContent = log.length ? `(${log.length})` : "";
+    document.getElementById("log-empty").hidden = log.length > 0;
+    document.getElementById("download").hidden = log.length === 0;
+  }
+
+  document.getElementById("download").addEventListener("click", () => {
+    // Quote every cell, and defuse anything a spreadsheet would treat as a formula.
+    const cell = (v) => {
+      let s = String(v ?? "");
+      if (/^[=+\-@]/.test(s)) s = "'" + s;
+      return `"${s.replace(/"/g, '""')}"`;
+    };
+    const rows = [["Date", "Email", "Message"], ...log.map((m) => [new Date(m.created_at).toISOString(), m.sender_email, m.message])];
+    const csv = rows.map((r) => r.map(cell).join(",")).join("\r\n");
+    const a = document.createElement("a");
+    // The BOM makes Excel read the file as UTF-8.
+    a.href = URL.createObjectURL(new Blob(["\uFEFF" + csv], { type: "text/csv;charset=utf-8" }));
+    a.download = "Reachouts Log.csv";
+    a.click();
+    URL.revokeObjectURL(a.href);
+  });
 
   sb.auth.onAuthStateChange((_event, session) => {
     const next = session?.user ?? null;

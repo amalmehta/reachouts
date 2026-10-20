@@ -113,6 +113,17 @@ a { color: var(--accent); }
 .prefix-field input:focus { outline: none; }
 .actions { display: flex; gap: 10px; flex-wrap: wrap; }
 .secondary { background: transparent; color: var(--accent); border: 1px solid var(--accent); }
+.small { padding: 6px 14px; font-size: 13px; }
+
+.log-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
+.log { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; max-height: 480px; overflow-y: auto; }
+.log li { background: var(--field); border: 1px solid var(--line); border-radius: 14px; padding: 12px 14px; }
+.log-top { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; font-size: 14px; }
+.log-top strong { word-break: break-all; }
+.log-when { color: var(--muted); font-size: 13px; }
+.log-top a { margin-left: auto; font-size: 13px; font-weight: 600; }
+.log-text { margin: 6px 0 0; font-size: 14px; white-space: pre-wrap; word-break: break-word; }
+.log-text.missing { color: var(--muted); font-style: italic; }
 
 @media (max-width: 520px) {
   .card { padding: 24px 20px; }

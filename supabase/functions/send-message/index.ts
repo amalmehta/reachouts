@@ -79,6 +79,9 @@ Deno.serve(async (req) => {
     return reply(502, { error: "Hmm, that didn't go through. Mind trying again?" });
   }
 
-  await db.from("sends").insert({ profile_id: profile.id, sender_email: email.toLowerCase() });
+  await Promise.all([
+    db.from("sends").insert({ profile_id: profile.id, sender_email: email.toLowerCase() }),
+    db.from("messages").insert({ profile_id: profile.id, sender_email: email, message }),
+  ]);
   return reply(200, { ok: true });
 });
