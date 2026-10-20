@@ -7,11 +7,14 @@
 | `index.html` + `script.js` | The page visitors see at `reachouts.me/?u=<handle>`. With no handle, it's a landing page. |
 | `account.html` + `account.js` | Sign in with an emailed link, pick a name, an optional headline and intro, and a handle, then copy your link. You can edit the name, headline and intro later. |
 | `config.js` | The Supabase URL and anon key. Both are public by design. |
-| `supabase/migrations/` | The `profiles` table (handle, display name, headline and intro) and the `sends` log used for rate limits. Row-level security means people can only see and edit their own profile. |
+| `supabase/migrations/` | The `profiles` table (handle, display name, headline and intro) and the `messages` log of everyone who reached out (with the `sends` table used for rate limits). Row-level security means people can only see and edit their own profile and read their own messages. |
 | `supabase/functions/send-message/` | Looks up the owner of a handle and emails them through Resend, with **Reply-To set to the visitor**. |
 | `supabase/templates/magic-link.html` | The sign-in email. |
+| `.github/workflows/keep-alive.yml` | A daily read-only request that stops the free Supabase project from pausing. |
 
 Your inbox is the email you sign in with, which the sign-in link verifies. Visitors never see it. They only see your display name, headline and intro.
+
+Your account page lists everyone who reached out, newest first, with a **Reply** button and a **Download CSV** button. Messages sent before 2026-10-20 show the sender and date only, because their text was not stored then.
 
 Limits: each visitor email can send 5 messages an hour, and each link receives at most 30 an hour.
 
@@ -104,6 +107,8 @@ python3 -m http.server 8791
 | Sign-in email | `supabase/templates/magic-link.html` |
 
 ## Troubleshooting
+
+- **Pages say "couldn't find that one", or messages fail for everyone**: the Supabase project may be paused. Open the Supabase dashboard and click **Restore project**, then check that the *Keep Supabase Awake* workflow is running under the repo's **Actions** tab. GitHub turns off scheduled workflows in repos with no commits for 60 days; re-enable it there if needed.
 
 - **"Sign-ups open very soon"**: `config.js` still has the placeholder Supabase values.
 - **"Email sending isn't set up yet."**: the `RESEND_API_KEY` secret is missing.

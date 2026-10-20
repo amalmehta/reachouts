@@ -4,6 +4,9 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Your Reachouts Link</title>
+  <link rel="icon" href="favicon.ico" sizes="any">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
   <meta name="description" content="Get your own link where people can send you questions. Messages land in your inbox.">
   <link rel="stylesheet" href="styles.css">
 </head>
@@ -36,10 +39,10 @@
         <label>Your first name
           <input name="name" type="text" autocomplete="given-name" required maxlength="60" placeholder="Sam">
         </label>
-        <label>Your headline <span class="optional">(optional)</span>
+        <label><span>Your headline <span class="optional">(optional)</span></span>
           <input name="headline" type="text" maxlength="160" placeholder="Product designer · happy to chat about career switches">
         </label>
-        <label>Your intro <span class="optional">(optional)</span>
+        <label><span>Your intro <span class="optional">(optional)</span></span>
           <textarea name="intro" rows="3" maxlength="300" placeholder="Got a question, want some advice, or just want to say hi? Drop me a note. I read every one and write back."></textarea>
         </label>
         <label>Your link
@@ -65,15 +68,24 @@
         </div>
       </div>
 
+      <section class="edit" id="log">
+        <div class="log-head">
+          <h2>Your reachouts <span class="optional" id="log-count"></span></h2>
+          <button type="button" class="secondary small" id="download" hidden>Download CSV</button>
+        </div>
+        <p class="hint" id="log-empty" hidden>No one has reached out yet. Share your link and messages will show up here.</p>
+        <ol class="log" id="log-list"></ol>
+      </section>
+
       <form id="edit-form" class="edit" novalidate>
         <h2>Your page</h2>
         <label>Your first name
           <input name="name" type="text" required maxlength="60">
         </label>
-        <label>Your headline <span class="optional">(optional)</span>
+        <label><span>Your headline <span class="optional">(optional)</span></span>
           <input name="headline" type="text" maxlength="160" placeholder="Product designer · happy to chat about career switches">
         </label>
-        <label>Your intro <span class="optional">(optional)</span>
+        <label><span>Your intro <span class="optional">(optional)</span></span>
           <textarea name="intro" rows="3" maxlength="300" placeholder="Got a question, want some advice, or just want to say hi? Drop me a note. I read every one and write back."></textarea>
         </label>
         <button type="submit" class="secondary">Save changes</button>

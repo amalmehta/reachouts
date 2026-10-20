@@ -48,6 +48,8 @@ Answered by the owner on 2026-09-29:
 - Accounts: anyone signs in with an emailed link, picks a handle and gets `…/reachouts/?u=<handle>`. Messages go to their inbox with Reply-To set to the visitor.
 - Backend: Supabase (sign-in, database, edge function) plus Resend (sending). This replaced the earlier Web3Forms version.
 - Tested on a full local copy of the backend with a fake Resend before going live.
+- Log: every message is stored with the sender's email and date, and the owner sees them on the account page with a Reply button and CSV download. Only the owner can read their log. Earlier senders were backfilled from the rate-limit table, without message text.
+- Keep-alive: the free Supabase project paused itself once, taking the site down. A daily GitHub Action now makes one read-only request to keep it awake (the owner chose this over paying $25 a month for Pro).
 - Intro: owners can replace the default line ("Got a question… I read every one and write back.") with their own intro, up to 300 characters. Empty means the default.
 - Headline: owners can add an optional headline (up to 160 characters) shown under their name, and edit it later.
 - Supabase project `reachouts` created in the owner's org (us-west-2, free). The DB password is in the macOS Keychain. The branded sign-in email is on now that sign-in emails go through Resend.
@@ -82,3 +84,4 @@ CHANGELOG:
 - 2026-09-29 — moved to reachouts.me
 - 2026-09-29 — connected Resend on reachouts.me for messages and sign-in emails; sign-ups open to anyone
 - 2026-09-29 — added an optional intro so each person can write their own line under the headline
+- 2026-10-20 — added a log of everyone who reaches out (account page list + CSV); added a daily keep-alive after the project paused
