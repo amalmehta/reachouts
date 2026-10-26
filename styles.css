@@ -9,6 +9,9 @@
   --accent-text: #ffffff;
   --ok: #2f7a4a;
   --error: #b3261e;
+  --airmail: #3d6fb4;
+  --line-strong: #e6cdb6;
+  --chip-on: #fbe6dc;
 }
 @media (prefers-color-scheme: dark) {
   :root {
@@ -22,6 +25,9 @@
     --accent-text: #2a120b;
     --ok: #79c795;
     --error: #ff8a80;
+    --airmail: #7fa6e3;
+    --line-strong: #4a3e38;
+    --chip-on: #3a2a24;
   }
 }
 
@@ -93,6 +99,137 @@ button, .button {
 button:hover, .button:hover { filter: brightness(1.05); }
 button:disabled { opacity: 0.6; cursor: wait; }
 
+/* Tap-to-start ideas above the postcard */
+.starters { display: flex; flex-wrap: wrap; gap: 6px; }
+.starters button {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text);
+  background: var(--field);
+  border: 1px solid var(--line);
+  padding: 6px 12px;
+  transition: transform 0.15s, border-color 0.15s, background-color 0.15s;
+}
+.starters button:hover { border-color: var(--accent); transform: translateY(-1px); filter: none; }
+.starters button[aria-pressed="true"] { border-color: var(--accent); background: var(--chip-on); }
+.starters button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* The postcard: an airmail-striped edge around a sheet of paper */
+.postcard {
+  padding: 6px;
+  border-radius: 20px;
+  background: repeating-linear-gradient(135deg,
+    var(--accent) 0 10px, transparent 10px 18px, var(--airmail) 18px 28px, transparent 28px 36px);
+}
+.paper {
+  display: grid;
+  gap: 14px;
+  padding: 16px 18px 18px;
+  border-radius: 14px;
+  background: var(--field);
+}
+.postcard-top { position: relative; display: flex; align-items: flex-start; justify-content: space-between; min-height: 56px; }
+.to { margin: 6px 0 0; font-size: 14px; color: var(--muted); }
+.to strong { color: var(--text); font-size: 18px; margin-left: 4px; }
+
+.stamp {
+  display: grid;
+  place-items: center;
+  width: 50px;
+  height: 58px;
+  color: var(--accent);
+  background: var(--chip-on);
+  box-shadow: inset 0 0 0 7px var(--chip-on), inset 0 0 0 8.5px var(--accent);
+  transform: rotate(4deg);
+  /* Perforated edge: a solid middle plus a grid of holes that only shows at the border */
+  -webkit-mask: linear-gradient(#000 0 0) center / calc(100% - 10px) calc(100% - 10px) no-repeat,
+    radial-gradient(circle 3px, #0000 95%, #000) -5px -5px / 10px 10px round;
+  mask: linear-gradient(#000 0 0) center / calc(100% - 10px) calc(100% - 10px) no-repeat,
+    radial-gradient(circle 3px, #0000 95%, #000) -5px -5px / 10px 10px round;
+  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.08));
+}
+.stamp svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.postmark {
+  position: absolute;
+  top: 18px;
+  right: 34px;
+  width: 52px;
+  fill: none;
+  stroke: var(--muted);
+  stroke-width: 1.4;
+  opacity: 0.45;
+  pointer-events: none;
+}
+
+#reach-form .from { display: flex; flex-wrap: wrap; align-items: baseline; column-gap: 8px; }
+#reach-form .from .optional { font-size: 13px; }
+#reach-form .from input {
+  flex-basis: 100%;
+  margin-top: 2px;
+  padding: 6px 2px;
+  background: transparent;
+  border: 0;
+  border-bottom: 1.5px dashed var(--line-strong);
+  border-radius: 0;
+}
+#reach-form .from input:focus { outline: none; border-bottom: 1.5px solid var(--accent); }
+
+/* Lined writing paper; the lines scroll with the text */
+#reach-form textarea {
+  line-height: 28px;
+  padding: 0 4px;
+  border: 0;
+  border-radius: 6px;
+  background: linear-gradient(transparent 27px, var(--line-strong) 27px) 0 0 / 100% 28px local;
+  resize: vertical;
+}
+
+/* When it's sent, the postcard is whisked away and a fresh one slides in */
+.postcard.posted { animation: post-off 0.9s ease-in-out; }
+@keyframes post-off {
+  40% { transform: translate(28px, -32px) rotate(4deg) scale(0.94); opacity: 0; }
+  41% { transform: translateY(18px); opacity: 0; }
+}
+
+/* Send button: the paper plane flies off while sending, then the label turns to "Sent" */
+#send { display: inline-flex; align-items: center; gap: 10px; transition: background-color 0.3s; }
+#send svg { fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+#send .plane { width: 18px; height: 18px; flex: none; }
+.send-labels { display: grid; }
+.send-labels > span { grid-area: 1 / 1; transition: opacity 0.25s, transform 0.25s; }
+.label-sent { display: inline-flex; align-items: center; justify-content: center; gap: 6px; opacity: 0; transform: translateY(6px); }
+.label-sent svg { width: 16px; height: 16px; stroke-width: 2.5; stroke-dasharray: 22; stroke-dashoffset: 22; }
+
+#send.sending:disabled, #send.sent:disabled { opacity: 1; cursor: default; }
+#send.sending .plane { animation: plane-fly 0.7s cubic-bezier(0.5, 0, 0.75, 0) forwards; }
+#send.sending .label-idle { animation: breathe 1.4s ease-in-out 0.7s infinite; }
+#send.sent { background: var(--ok); }
+#send.sent .label-idle { opacity: 0; transform: translateY(-6px); }
+#send.sent .label-sent { opacity: 1; transform: none; }
+#send.sent .label-sent svg { animation: draw 0.35s ease-out 0.15s forwards; }
+#send.sent .plane { opacity: 0; }
+#send.returning .plane { animation: plane-in 0.45s ease-out; }
+#send.failed .plane { animation: plane-back 0.55s ease-out; }
+
+@keyframes plane-fly {
+  20% { transform: translate(-3px, 2px) rotate(-4deg); opacity: 1; }
+  60% { opacity: 1; }
+  100% { transform: translate(64px, -40px) rotate(-12deg) scale(0.6); opacity: 0; }
+}
+@keyframes plane-in { from { transform: translate(-14px, 6px); opacity: 0; } }
+@keyframes plane-back {
+  from { transform: translate(40px, -28px) rotate(-10deg) scale(0.7); opacity: 0; }
+  70% { transform: translate(-2px, 1px); opacity: 1; }
+}
+@keyframes breathe { 50% { opacity: 0.6; } }
+@keyframes draw { to { stroke-dashoffset: 0; } }
+
+@media (prefers-reduced-motion: reduce) {
+  #send *, .postcard, .starters button { animation: none !important; transform: none !important; }
+  #send.sending .plane { opacity: 0.5; }
+  .label-sent svg { stroke-dashoffset: 0; }
+}
+
 #status, .status { margin: 0; min-height: 1.5em; font-size: 14px; color: var(--muted); }
 #status.ok, .status.ok { color: var(--ok); }
 #status.error, .status.error { color: var(--error); }
@@ -116,4 +253,8 @@ a { color: var(--accent); }
 
 @media (max-width: 520px) {
   .card { padding: 24px 20px; }
+  .paper { padding: 14px 14px 16px; }
+  .stamp { width: 44px; height: 52px; }
+  .postmark { right: 28px; width: 44px; }
+  .starters button { font-size: 13px; padding: 5px 10px; }
 }
