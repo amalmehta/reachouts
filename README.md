@@ -21,6 +21,7 @@ flowchart LR
 - Anyone can sign up: email sign-in link, no password
 - Add a short headline and your own intro to your page
 - Visitors just type their email and a message
+- A log of everyone who reached out, with a Reply button and CSV download
 - Your email address is never shown to visitors
 - Replies go straight back to the sender
 - Rate limits and a spam honeypot built in
